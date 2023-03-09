@@ -4,19 +4,19 @@ import {
   useRef,
   useState,
   ChangeEvent,
-  Dispatch,
-  SetStateAction,
+  useMemo,
 } from "react";
 import { Context } from "../../context/root";
 import { socket } from "../../context/socket";
 import Avatar from "../Avatar";
 import CryptoJS from "crypto-js";
-import ShowPass from "../../public/icons/eye-svgrepo-com.svg"
+import ShowPass from "../../public/icons/eye-svgrepo-com.svg";
 import HidePass from "../../public/icons/eye-hide-svgrepo-com.svg";
 import { Fetch } from "../../utils/fetch";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-
+import { googleLogout } from "@react-oauth/google";
+import Input from "./Input";
 interface IDataUpload {
   name: string;
   email: string;
@@ -29,7 +29,7 @@ const Profile = () => {
   const { state } = useContext(Context);
   const [linkToImage, setLinkToImage] = useState("");
   const [passType, setPassType] = useState<"text" | "password">("password");
-
+  
   const base64Image = useRef<string | ArrayBuffer | null>("");
   const dataUpload = useRef<IDataUpload>({
     email: "",
@@ -40,16 +40,25 @@ const Profile = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-  const userAvatar = state.users.find(user => user._id === state.currUserId)?.avatar
+  const userAvatar = state.users.find(
+    (user) => user._id === state.currUserId
+  )?.avatar;
   const navigate = useNavigate();
+  const currUser = useMemo(() => {
+    return state.users.find((user) => user._id === state.currUserId);
+  }, [state.currUserId, state.users.length]);
 
-  const logout = useMutation(["logout"], () => {
-    return new Fetch('/auth/logout', state.currUserId).delete()
-  }, {
-    onSuccess: (data) => {
-      console.log(data);
+  const logout = useMutation(
+    ["logout"],
+    () => {
+      return new Fetch("/auth/logout", state.currUserId).delete();
+    },
+    {
+      onSuccess: (data) => {
+        console.log(data);
+      },
     }
-  })
+  );
 
   const loadFile = function (event: ChangeEvent<HTMLInputElement>) {
     if (event.target.files && event.target.files.length > 0) {
@@ -66,7 +75,10 @@ const Profile = () => {
 
   const handleUpload = () => {
     if (emailRef.current && nameRef.current && passwordRef.current) {
-      const encryptPass = CryptoJS.AES.encrypt(passwordRef.current.value, pass_secret).toString()
+      const encryptPass = CryptoJS.AES.encrypt(
+        passwordRef.current.value,
+        pass_secret
+      ).toString();
 
       dataUpload.current.email = emailRef.current.value;
       dataUpload.current.name = nameRef.current.value;
@@ -77,9 +89,8 @@ const Profile = () => {
       socket.emit(
         "edit_user_info",
         dataUpload.current,
-        (response: { success: boolean, image_url?: string} ) => {
+        (response: { success: boolean; image_url?: string }) => {
           if (response.success) {
-            
           }
         }
       );
@@ -95,27 +106,33 @@ const Profile = () => {
   };
 
   const handleLogout = () => {
-    logout.mutate()
-    navigate('/login')
-    localStorage.removeItem('chatfun_userId')
-  }
+    logout.mutate();
+    googleLogout();
+    navigate("/login");
+    localStorage.removeItem("chatfun_userId");
+  };
 
   useLayoutEffect(() => {
     const user = state.users.find((user) => user._id === state.currUserId);
-    if (user && emailRef.current && nameRef.current && passwordRef.current) {
-      const decryptPass = CryptoJS.AES.decrypt(
-        user.password,
-        pass_secret
-      ).toString(CryptoJS.enc.Utf8);
+    if (user && emailRef.current && nameRef.current) {
+      if (user.password && passwordRef.current) {
+        const decryptPass = CryptoJS.AES.decrypt(
+          user.password,
+          pass_secret
+        ).toString(CryptoJS.enc.Utf8);
 
+        passwordRef.current.value = decryptPass;
+      }
       emailRef.current.value = user.email;
       nameRef.current.value = user.name;
-      passwordRef.current.value = decryptPass;
     }
-  }, [state.users]);
+  }, [state.users.length]);
 
   return (
-    <div className="absolute top-full right-0 border shadow-lg p-2 bg-white text-gray-700 rounded-lg z-20" style={{ display: 'none' }}>
+    <div
+      className="absolute top-full right-0 border shadow-lg p-4 bg-white text-gray-700 rounded-lg z-20"
+      style={{ display: "none" }}
+    >
       <div className="flex justify-center">
         <div className="cursor-pointer">
           <label className="cursor=pointer">
@@ -130,28 +147,31 @@ const Profile = () => {
           </label>
         </div>
       </div>
-      <div className="flex gap-2">
-        <h3 className="text-gray-700">email:</h3>
-        <input ref={emailRef} type="email" className="outline-none w-fit" />
+      <div className="flex gap-1">
+        <h3 className="w-14">email :</h3>
+        <Input ref={emailRef} valueLen={emailRef.current?.value.length} type='text' className="outline-none w-fit" />
       </div>
       <div className="flex gap-2">
-        <h3>name:</h3>
-        <input ref={nameRef} type="text" className="outline-none w-fit" />
+        <h3 className="w-14">name :</h3>
+        {/* <input ref={nameRef} type="text" className="outline-none w-fit" /> */}
+        <Input ref={nameRef} type="text" className="outline-none w-fit" valueLen={nameRef.current?.value.length} />
       </div>
-      <div className="flex gap-2 relative">
-        <h3>password:</h3>
-        <input
-          ref={passwordRef}
-          type={passType}
-          className="outline-none w-fit"
-        />
-        <img
-          src={passType === "password" ? ShowPass : HidePass}
-          width={18}
-          className="absolute right-0 top-1/2 -translate-y-1/2"
-          onClick={handleConvertType}
-        />
-      </div>
+      {currUser && currUser.password && (
+        <div className="flex gap-2 relative">
+          <h3 className="w-12">password:</h3>
+          <input
+            ref={passwordRef}
+            type={passType}
+            className="outline-none w-fit"
+          />
+          <img
+            src={passType === "password" ? ShowPass : HidePass}
+            width={18}
+            className="absolute right-0 top-1/2 -translate-y-1/2"
+            onClick={handleConvertType}
+          />
+        </div>
+      )}
       <div className="mt-2">
         <button
           onClick={handleUpload}

@@ -18,7 +18,10 @@ declare interface User {
 
 declare interface UserLogin {
   email: string;
-  password: string;
+  password?: string;
+  picture?: string;
+  name?: string;
+  ggId?: string;
 }
 
 declare interface IResultQuery {
@@ -31,6 +34,16 @@ declare interface IResultUsersQuery extends IResultQuery {
 
 declare interface IResultUserQuery extends IResultQuery {
   data: User;
+}
+
+declare interface IUserFromGG {
+  id: string;
+  email: string;
+  family_name: string;
+  given_name: string;
+  locale: string;
+  name: string;
+  picture: string;
 }
 
 declare interface Message {
