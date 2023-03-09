@@ -63,7 +63,7 @@ const Item = ({ _id, handleClick, avatar, name, type }: IProps) => {
       <div onClick={() => handleClick(_id)}>
         <Avatar src={avatar} type={type} />
       </div>
-      <div className="flex-1" onClick={() => handleClick(_id)}>
+      <div className="flex-1" onClick={() => handleClick(_id)} title={name}>
         <p className="text-sm relative w-max">
           {handleName(name, type)}
           <span

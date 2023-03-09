@@ -44,9 +44,9 @@ const Request = ({ request, setRequest }: IProps) => {
               <div className="flex items-center justify-between hover:bg-gray-100 p-2 rounded-md" key={userId}>
                 <div className="flex items-center gap-2">
                   <Avatar src={user.avatar} />
-                  <p className="text-md">{user.name}</p>
+                  <p className="text-sm" title={user.name}>{user.name.length > 9 ? user.name.slice(0,7) + ' ...' : user.name }</p>
                 </div>
-                <div>
+                <div className="flex ml-2">
                   <button 
                     className="py-1 px-2 shadow bg-green-500 hover:bg-green-600 text-white rounded-full text-sm"
                     onClick={() => handleAcceptRequest(user._id)}  
