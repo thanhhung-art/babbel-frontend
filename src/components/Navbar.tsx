@@ -33,12 +33,12 @@ const Navbar = forwardRef((props, ref: ForwardedRef<HTMLDivElement>) => {
     >
       <h2 className="font-bold text-lg">Babbel</h2>
       <div className="flex-1"></div>
-      <div className="relative mr-2" onClick={handleShowNotification}>
+      {/* <div className="relative mr-2" onClick={handleShowNotification}>
         <BellIcon />
         <div className="absolute -top-1 -left-1 bg-blue-500 w-4 h-4 rounded-full flex justify-center items-center">
           <p className="text-white text-ssm">1</p>
         </div>
-      </div>
+      </div> */}
       <div className="cursor-pointer relative mr-2 boxContainer">
         <div>
           <Avatar src={user?.avatar || ""} />
