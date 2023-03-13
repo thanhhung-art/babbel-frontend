@@ -30,7 +30,7 @@ const Register = () => {
     return new Fetch(`/auth/register`, "", data).post();
   }, {
     onSuccess({ msg, data }) {
-      if (msg == 'user register successfully') {
+      if (msg == 'query success') {
         socket.connect()
         socket.auth = { user: data }
         dispatch({ type: SET_AUTHENCATED, payload: true})
