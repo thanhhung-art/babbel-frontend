@@ -29,7 +29,6 @@ const Profile = () => {
   const { state } = useContext(Context);
   const [linkToImage, setLinkToImage] = useState("");
   const [passType, setPassType] = useState<"text" | "password">("password");
-  
   const base64Image = useRef<string | ArrayBuffer | null>("");
   const dataUpload = useRef<IDataUpload>({
     email: "",
@@ -153,7 +152,6 @@ const Profile = () => {
       </div>
       <div className="flex gap-2">
         <h3 className="w-14">name :</h3>
-        {/* <input ref={nameRef} type="text" className="outline-none w-fit" /> */}
         <Input ref={nameRef} type="text" className="outline-none w-fit" valueLen={nameRef.current?.value.length} />
       </div>
       {currUser && currUser.password && (
