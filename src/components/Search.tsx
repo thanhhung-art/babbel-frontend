@@ -111,8 +111,8 @@ const Search = () => {
             <option value="room">room</option>
           </select>
         </div>
-        {showResult && (
-          <div className="absolute top-full left-0 right-0 border-2 shadow-md bg-white z-10">
+        {showResult && searchRef.current?.value && (
+          <div className="absolute top-full left-0 right-0 shadow-md bg-white z-10">
             {searchType === "user"
               ? usersQuery.data && renderSearchData(usersQuery.data.data)
               : roomQuery.data && renderSearchData(roomQuery.data.data)}
