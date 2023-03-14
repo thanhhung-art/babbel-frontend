@@ -4,6 +4,8 @@ import { SET_ROOMS, SET_USERS } from "../context/actions";
 import { Context } from "../context/root";
 import { socket } from "../context/socket";
 import { Fetch } from "../utils/fetch";
+import PlusIcon from "./icons/PlusIcon";
+import VerifiedFriends from "./icons/VerifiedFriends";
 
 const Search = () => {
   const { state, dispatch } = useContext(Context);
@@ -63,26 +65,26 @@ const Search = () => {
           className="flex border items-center shadow-sm p-2"
         >
           <p className="flex-1">{element.name}</p>
-          <button className="bg-blue-500 text-white rounded-full h-5 w-5 flex justify-center items-center cursor-pointer hover:bg-blue-600 active:bg-blue-700">
+          <button className="rounded-full h-5 w-5 flex justify-center items-center cursor-pointer">
             {searchType === "user" ? (
               state.friends?.includes(element._id) ? (
-                <span className="font-bold">-</span>
+                <div><VerifiedFriends w={15} h={15} /></div>
               ) : (
                 <span
-                  className="font-bold"
+                  className="border rounded-full active:bg-gray-200"
                   onClick={() => handleSendRequest(element._id)}
                 >
-                  +
+                  <PlusIcon />
                 </span>
               )
             ) : state.user?.roomJoined.includes(element._id) ? (
-              <span className="font-bold">-</span>
+              <span className="font-bold"><VerifiedFriends w={15} h={15} /></span>
             ) : (
               <span
                 className="font-bold"
                 onClick={() => handleSendRequest(element._id)}
               >
-                +
+                <PlusIcon />
               </span>
             )}
           </button>
