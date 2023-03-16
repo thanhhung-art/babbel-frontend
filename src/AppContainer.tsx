@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from "react";
+import { useReducer } from "react";
 import App from "./App";
 import reducer from "./context/reducer";
 import { Context, initialState } from "./context/root";
@@ -19,20 +19,16 @@ const queryClient = new QueryClient({
 const Container = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  useEffect(() => {
-    console.log('app container running');
-  }, [])
-
   return (
-    <GoogleOAuthProvider clientId={clientId}>
-    <QueryClientProvider client={queryClient}>
+    <BrowserRouter>
       <Context.Provider value={{ state, dispatch }}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
+        <QueryClientProvider client={queryClient}>
+          <GoogleOAuthProvider clientId={clientId}>
+            <App />
+          </GoogleOAuthProvider>
+        </QueryClientProvider>
       </Context.Provider>
-    </QueryClientProvider>
-    </GoogleOAuthProvider>
+    </BrowserRouter>
   );
 };
 
