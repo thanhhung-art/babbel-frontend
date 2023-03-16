@@ -1,7 +1,10 @@
+import { postcssEsModules } from "postcss-es-modules"
 
 export default {
-  plugins: {
-    tailwindcss: {},
-    autoprefixer: {},
-  },
+  plugins: [
+    postcssEsModules({
+      tailwindcss: {},
+      autoprefixer: {},
+    })
+  ]
 }
