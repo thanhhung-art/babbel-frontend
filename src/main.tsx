@@ -3,3 +3,5 @@ import Container from './AppContainer'
 import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render( <Container /> )
+
+console.log('app is running');
