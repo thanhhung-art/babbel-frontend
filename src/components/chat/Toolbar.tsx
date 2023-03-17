@@ -60,6 +60,10 @@ const Toolbar = ({ setConversation, isFetchingMessage }: IProps) => {
       if (!requestJoinRoom.includes(userId))
         setRoomRequest([...requestJoinRoom, userId]);
     });
+
+    return () => {
+      socket.off("join_room_request")
+    }
   }, [requestJoinRoom.length]);
 
   useEffect(() => {
@@ -82,6 +86,10 @@ const Toolbar = ({ setConversation, isFetchingMessage }: IProps) => {
           }
         }
       );
+    }
+
+    return () => {
+      socket.off("someone_join_room")
     }
   }, [state.rooms.length]);
 

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef } from "react";
+import { memo, useContext, useEffect, useRef } from "react";
 import Chat from "../components/chat/Chat";
 import Lists from "../components/lists/Lists";
 import Navbar from "../components/Navbar";
@@ -13,6 +13,7 @@ const Home = () => {
 
   
   useEffect(() => {
+    
     socket.emit("user_connected", state.currUserId);
     
     socket.on("users_online", (users: { id: string; socketId: string }[]) => {
@@ -20,9 +21,11 @@ const Home = () => {
     });
 
     return () => {
-      socket.off("connect");
-      socket.disconnect();
-    };
+      socket.off("user_connected")
+      socket.off("users_online")
+      socket.connected && socket.off("connect")
+      socket.connected && socket.disconnect()
+    }
   }, []);
 
   useEffect(() => {

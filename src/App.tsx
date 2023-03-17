@@ -3,6 +3,7 @@ import Login from "./pages/Login";
 import { Route, Routes } from "react-router-dom";
 import CheckAuth from "./components/CheckAuth";
 import Register from "./pages/Register";
+import { useEffect } from "react";
 
 function App() {
 

@@ -278,6 +278,11 @@ const Chat = () => {
         chatContainer.current?.scrollBy(0, 0);
       }
     );
+
+    return () => {
+      socket.off("private_message")
+      socket.off("room_message")
+    }
   }, []);
 
   useEffect(() => {
@@ -302,6 +307,11 @@ const Chat = () => {
         setTypingMessage(false);
       }
     });
+
+    return () => {
+      socket.off("a_user_typing_a_message")
+      socket.off("a_user_stop_typing")
+    }
   }, [currConversationId]);
 
   useEffect(() => {

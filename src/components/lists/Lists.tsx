@@ -59,6 +59,12 @@ const Lists = () => {
     socket.on("decline_friend_request", (senderId: string) => {
       console.log("decline request");
     });
+
+    return () => {
+      socket.off("friend_request")
+      socket.off("accept_friend_request")
+      socket.off("decline_friend_request")
+    }
   }, []);
 
   return (

@@ -1,4 +1,4 @@
-import { useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import App from "./App";
 import reducer from "./context/reducer";
 import { Context, initialState } from "./context/root";

@@ -28,8 +28,10 @@ const CheckAuth = ({ children }: { children: JSX.Element }) => {
           let res = await new Fetch("/auth/checkauth", userId).get();
           
           if (res.msg === "authentication success") {
-            socket.connect();
-            socket.auth = { user: res.data };
+            if (!socket.connected) {
+              socket.connect();
+              socket.auth = { user: res.data };
+            }
             
             dispatch({ type: SET_CURR_USER_ID, payload: userId });
             dispatch({ type: SET_FRIENDS, payload: res.data.friends });

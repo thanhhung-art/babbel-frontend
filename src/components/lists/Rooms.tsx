@@ -66,6 +66,10 @@ const Rooms = () => {
         setRoomJoined((roomJoined) => [...roomJoined, room]);
       }
     });
+
+    return () => {
+      socket.off("accept_join_room_request")
+    }
   }, []);
 
   useEffect(() => {
@@ -83,6 +87,10 @@ const Rooms = () => {
           dispatch({ type: SET_ROOMS, payload: [...state.rooms] });
         }
       );
+    }
+
+    return () => {
+      socket.off("push_the_user_out_of_the_room")
     }
   }, [state.rooms.length]);
 
