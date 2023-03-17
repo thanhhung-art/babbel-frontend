@@ -1,12 +1,10 @@
 import {
   Dispatch,
-  memo,
   useMemo,
   SetStateAction,
   useCallback,
   useContext,
   useEffect,
-  useLayoutEffect,
   useRef,
   useState,
 } from "react";
@@ -14,12 +12,9 @@ import { Context } from "../context/root";
 import { socket } from "../context/socket";
 import Avatar from "./Avatar";
 import CryptoJS from "crypto-js";
-import * as dayjs from "dayjs";
-import * as relativeTime from "dayjs/plugin/relativeTime";
 import DeleteIcon from "./icons/DeleteIcon";
 import LikeIcon from "./icons/LikeIcon";
-dayjs().format();
-dayjs.extend(relativeTime);
+import { Time } from "../utils/time";
 
 const pass_secret = import.meta.env.VITE_PASS_SECRET;
 
@@ -157,7 +152,7 @@ const Message = ({
           }`}
         >
           <div
-            className={`max-w-fit relative ${
+            className={`max-w-fit min-w-3 relative ${
               isCurrUser && !isNotification && "float-right"
             }`}
             onClick={handleOpenDeleteBtn}
@@ -186,7 +181,7 @@ const Message = ({
               <p
                 className={`text-ssm text-gray-60`}
               >
-                {dayjs(new Date(Number(content.time))).fromNow()}
+                {Time(content.time)}
               </p>
             </div>
             {(isCurrUser || isRoomMaster) && (
