@@ -16,7 +16,7 @@ export class Fetch {
     this.authId = authId;
     this.headers = { 
       "Content-Type": "application/json",
-      'authid': this.authId
+      'authid': this.authId,
     };
     this.body = body;
     this.serverUrl = server_url;
