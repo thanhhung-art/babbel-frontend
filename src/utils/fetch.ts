@@ -11,13 +11,14 @@ export class Fetch {
   serverUrl: string;
   authId: string;
 
-  constructor(url: string, authId: string, body?: any, ) {
+  constructor(url: string, authId: string, body?: {}, ) {
     this.url = url;
     this.authId = authId;
-    this.headers = { 
-      "Content-Type": "application/json",
-      'authid': this.authId,
-    };
+
+    const header: Headers = { 'Content-type': 'application/json' }
+    authId && (header['authid'] = authId)
+    
+    this.headers = header
     this.body = body;
     this.serverUrl = server_url;
   }
