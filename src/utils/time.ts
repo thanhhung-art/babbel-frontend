@@ -9,44 +9,43 @@ export const Time = (messTime: string): string => {
   const days = Math.floor(hours / 24);
   const weeks = Math.floor(days / 7);
 
-    // Calculate months and years using date objects
-    let months;
-    let years;
+  // Calculate months and years using date objects
+  let months;
+  let years;
 
-    // Create date objects for the current time and the message time
-    const nowDate = new Date(now);
-    const messageDate = new Date(messageTime);
+  // Create date objects for the current time and the message time
+  const nowDate = new Date(now);
+  const messageDate = new Date(messageTime);
 
-    // Calculate the difference in years
-    years = nowDate.getFullYear() - messageDate.getFullYear();
+  // Calculate the difference in years
+  years = nowDate.getFullYear() - messageDate.getFullYear();
 
-    // Calculate the difference in months
-    months =
-      (nowDate.getFullYear() - messageDate.getFullYear()) * 12 +
-      (nowDate.getMonth() - messageDate.getMonth());
+  // Calculate the difference in months
+  months =
+    (nowDate.getFullYear() - messageDate.getFullYear()) * 12 +
+    (nowDate.getMonth() - messageDate.getMonth());
 
-    // Adjust for cases where the current day of month is less than the message day of month
-    if (nowDate.getDate() < messageDate.getDate()) {
-      months--;
-    }
+  // Adjust for cases where the current day of month is less than the message day of month
+  if (nowDate.getDate() < messageDate.getDate()) {
+    months--;
+  }
 
-  
-let result: string;
-if (years > 0) {
-result= `${years}y`;
-} else if (months >0) {
-result= `${months}mo`;
-} else if (weeks >0) {
-result= `${weeks}w`;
-} else if (days >0) {
-result= `${days}d`;
-} else if (hours >0) {
-result= `${hours}h`;
-} else if (minutes >0) {
-result= `${minutes}m`;
-}else{
-result=`${seconds}s`
-}
-console.log(result)
-return result;
+  let result: string;
+  if (years > 0) {
+    result = `${years}y`;
+  } else if (months > 0) {
+    result = `${months}mo`;
+  } else if (weeks > 0) {
+    result = `${weeks}w`;
+  } else if (days > 0) {
+    result = `${days}d`;
+  } else if (hours > 0) {
+    result = `${hours}h`;
+  } else if (minutes > 0) {
+    result = `${minutes}m`;
+  } else {
+    result = `${seconds}s`;
+  }
+
+  return result;
 };
