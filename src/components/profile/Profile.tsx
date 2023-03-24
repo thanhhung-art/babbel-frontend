@@ -160,7 +160,7 @@ const Profile = () => {
           <input
             ref={passwordRef}
             type={passType}
-            className="outline-none w-fit"
+            className="outline-none w-fit ml-5"
           />
           <img
             src={passType === "password" ? ShowPass : HidePass}

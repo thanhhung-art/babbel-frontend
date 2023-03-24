@@ -169,7 +169,7 @@ const Message = ({
               </div>
             )}
             {messageDecrypt && (
-              <p className={`p-1 rounded shadow shadow-slate-300 ${messageColor}`}>
+              <p className={`p-1 rounded shadow max-w-lg shadow-slate-300 ${messageColor}`}>
                 {messageDecrypt}
               </p>
             )}
