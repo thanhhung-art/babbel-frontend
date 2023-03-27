@@ -2,8 +2,6 @@ import { lazy, Suspense, useContext, useEffect, useState } from "react";
 import { Context } from "../../context/root";
 import FriendsList from "./FriendsList";
 import Search from "../Search";
-import { useQuery } from "@tanstack/react-query";
-import { Fetch } from "../../utils/fetch";
 import { socket } from "../../context/socket";
 import { SET_FRIENDS } from "../../context/actions";
 const Rooms = lazy(() => import("./Rooms"));
@@ -18,21 +16,6 @@ const Lists = () => {
     "" | "translate-x-1/2 right-1/2" | "right-0"
   >("");
   const [request, setRequest] = useState<string[]>([]);
-
-  const friendReqQuery = useQuery<IResultFriendReqQuery>(
-    ["getFriendReq"],
-    () =>
-      new Fetch(
-        `/user/get_friend_req/${state.currUserId}`,
-        state.currUserId
-      ).get(),
-    {
-      onSuccess({ msg, data }) {
-        if (msg === "success") setRequest(data);
-      },
-      enabled: state.currUserId.length > 1,
-    }
-  );
 
   const handlePositionOfUnderscore = (p: number) => {
     if (p === 0) {

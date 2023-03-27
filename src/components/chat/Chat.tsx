@@ -291,7 +291,7 @@ const Chat = () => {
     });
 
     return () => {
-      socket.off("leave-room");
+      socket.off("leave_room");
     };
   }, []);
 

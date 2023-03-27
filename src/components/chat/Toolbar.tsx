@@ -7,10 +7,8 @@ import {
   Dispatch,
   SetStateAction,
   useCallback,
-  useRef,
 } from "react";
 import {
-  SET_CONTAINERS,
   SET_OPEN_CHAT,
   SET_ROOMS,
 } from "../../context/actions";
@@ -59,6 +57,7 @@ const Toolbar = ({ setConversation, isFetchingMessage }: IProps) => {
     socket.on("join_room_request", (userId: string, roomId: string) => {
       if (!requestJoinRoom.includes(userId))
         setRoomRequest([...requestJoinRoom, userId]);
+        console.log(userId);
     });
 
     return () => {
