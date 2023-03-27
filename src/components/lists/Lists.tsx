@@ -4,7 +4,7 @@ import FriendsList from "./FriendsList";
 import Search from "../Search";
 import { socket } from "../../context/socket";
 import { SET_FRIENDS } from "../../context/actions";
-const Rooms = lazy(() => import("./Rooms"));
+const Rooms = lazy(() => import("../Rooms/Rooms"));
 const Request = lazy(() => import ("./Request"));
 
 const Lists = () => {

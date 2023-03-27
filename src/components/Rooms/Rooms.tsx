@@ -12,7 +12,7 @@ import {
 import { Context } from "../../context/root";
 import { socket } from "../../context/socket";
 import { Fetch } from "../../utils/fetch";
-import Item from "./Item";
+import Item from "../lists/Item";
 
 const Rooms = () => {
   const { state, dispatch } = useContext(Context);
