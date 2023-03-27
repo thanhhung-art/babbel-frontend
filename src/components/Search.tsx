@@ -46,7 +46,6 @@ const Search = () => {
       socket.emit("friend_request", receiverId);
     } else {
       socket.emit("join_room_request", receiverId);
-      console.log(receiverId + ' receiver id');
     }
     setShowResult(false)
     if (searchRef.current) searchRef.current.value = ""

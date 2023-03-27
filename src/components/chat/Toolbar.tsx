@@ -8,10 +8,7 @@ import {
   SetStateAction,
   useCallback,
 } from "react";
-import {
-  SET_OPEN_CHAT,
-  SET_ROOMS,
-} from "../../context/actions";
+import { SET_OPEN_CHAT, SET_ROOMS } from "../../context/actions";
 import { Context } from "../../context/root";
 import { socket } from "../../context/socket";
 import SettingIcon from "../../public/icons/setting-tool-svgrepo-com.svg";
@@ -57,39 +54,36 @@ const Toolbar = ({ setConversation, isFetchingMessage }: IProps) => {
     socket.on("join_room_request", (userId: string, roomId: string) => {
       if (!requestJoinRoom.includes(userId))
         setRoomRequest([...requestJoinRoom, userId]);
-        console.log(userId);
     });
 
     return () => {
-      socket.off("join_room_request")
-    }
+      socket.off("join_room_request");
+    };
   }, [requestJoinRoom.length]);
 
   useEffect(() => {
-    if (state.rooms.length > 0) {
-      socket.on(
-        "someone_join_room",
-        (
-          roomId: string,
-          message: {
-            userId: string;
-            message: string;
-            time: string;
-            likes: string[];
-          }
-        ) => {
-          const index = state.rooms.findIndex((room) => room._id === roomId);
-          if (index !== -1) {
-            setRoomRequest(state.rooms[index].joinRequest);
-            setConversation((conversation) => [...conversation, message]);
-          }
+    socket.on(
+      "someone_join_room",
+      (
+        roomId: string,
+        message: {
+          userId: string;
+          message: string;
+          time: string;
+          likes: string[];
         }
-      );
-    }
+      ) => {
+        const index = state.rooms.findIndex((room) => room._id === roomId);
+        if (index !== -1) {
+          setRoomRequest(state.rooms[index].joinRequest);
+          setConversation((conversation) => [message, ...conversation]);
+        }
+      }
+    );
 
     return () => {
-      socket.off("someone_join_room")
-    }
+      socket.off("someone_join_room");
+    };
   }, [state.rooms.length]);
 
   useEffect(() => {
