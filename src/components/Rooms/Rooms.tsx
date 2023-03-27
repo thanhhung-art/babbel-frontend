@@ -32,6 +32,7 @@ const Rooms = () => {
     {
       onSuccess({ data }: { data: Room }) {
         dispatch({ type: SET_ROOMS, payload: [...state.rooms, data] });
+        console.log(data);
         setRoomJoined([...roomJoined, data]);
       },
     }
