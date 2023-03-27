@@ -7,7 +7,6 @@ import {
   SET_OPEN_LIST,
   SET_OTHER_ID,
   SET_ROOMS,
-  SET_USERS,
 } from "../../context/actions";
 import { Context } from "../../context/root";
 import { socket } from "../../context/socket";
@@ -32,7 +31,6 @@ const Rooms = () => {
     {
       onSuccess({ data }: { data: Room }) {
         dispatch({ type: SET_ROOMS, payload: [...state.rooms, data] });
-        console.log(data);
         setRoomJoined([...roomJoined, data]);
       },
     }
@@ -54,10 +52,10 @@ const Rooms = () => {
   };
 
   useEffect(() => {
-    const temp = state.rooms.filter((room) =>
+    const roomsJoined = state.rooms.filter((room) =>
       room.members.includes(state.currUserId)
     );
-    setRoomJoined(temp);
+    roomsJoined.length !== 0 && setRoomJoined(roomsJoined);
   }, [state.rooms]);
 
   useEffect(() => {
