@@ -154,7 +154,6 @@ const Chat = () => {
           }
         );
         setConversation((conversation) => [temp_message, ...conversation]);
-        base64Image.current = "";
       } else if (state.currRoomId) {
         socket.emit(
           "room_message",
@@ -168,8 +167,9 @@ const Chat = () => {
           (res: string) => {
             console.log(res);
           }
-        );
-      }
+          );
+        }
+      base64Image.current = "";
       messageRef.current.value = "";
       setLinkToImage("");
     }

@@ -17,6 +17,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { googleLogout } from "@react-oauth/google";
 import Input from "./Input";
+import { RESET_STATES } from "../../context/actions";
 interface IDataUpload {
   name: string;
   email: string;
@@ -26,7 +27,7 @@ interface IDataUpload {
 const pass_secret = import.meta.env.VITE_PASS_SECRET;
 
 const Profile = () => {
-  const { state } = useContext(Context);
+  const { state, dispatch } = useContext(Context);
   const [linkToImage, setLinkToImage] = useState("");
   const [passType, setPassType] = useState<"text" | "password">("password");
   const base64Image = useRef<string | ArrayBuffer | null>("");
@@ -54,7 +55,7 @@ const Profile = () => {
     },
     {
       onSuccess: (data) => {
-        console.log(data);
+        dispatch({ type: RESET_STATES })
       },
     }
   );

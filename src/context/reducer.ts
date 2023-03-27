@@ -1,5 +1,5 @@
 import * as ACTIONS from "./actions";
-import { InitialState } from "./root";
+import { initialState, InitialState } from "./root";
 
 export default function reducer(
   state: InitialState,
@@ -30,6 +30,8 @@ export default function reducer(
       return { ...state, openList: action.payload }
     case ACTIONS.SET_CONTAINERS:
       return { ...state, containers: action.payload }
+    case ACTIONS.RESET_STATES:
+      return initialState
     default:
       return { ...state }
   }
