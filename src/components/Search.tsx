@@ -55,7 +55,7 @@ const Search = () => {
     return data
       .filter((element) => {
         return searchRef.current
-          ? element.name.includes(searchRef.current.value) &&
+          ? element.name.toLowerCase().includes(searchRef.current.value.toLowerCase()) &&
               element._id !== state.currUserId
           : element._id !== state.currUserId;
       })
