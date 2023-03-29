@@ -151,7 +151,7 @@ const Profile = () => {
         <h3 className="w-14">email :</h3>
         <Input ref={emailRef} valueLen={emailRef.current?.value.length} type='text' className="outline-none w-fit" />
       </div>
-      <div className="flex gap-2">
+      <div className="flex gap-1">
         <h3 className="w-14">name :</h3>
         <Input ref={nameRef} type="text" className="outline-none w-fit" valueLen={nameRef.current?.value.length} />
       </div>

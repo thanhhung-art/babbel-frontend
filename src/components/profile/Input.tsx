@@ -8,14 +8,14 @@ interface IProps {
 }
 
 const Input = forwardRef((props: IProps, ref: ForwardedRef<HTMLInputElement>) => {
-  const [showSign, setShowSign] = useState(true)
+  const [showSign, setShowSign] = useState(false)
 
   const handleShowSign = () => setShowSign(!showSign)
 
   return (
     <div className='flex gap-1 relative pr-4'>
       <input ref={ref} type={props.type} className={props.className} onFocus={handleShowSign} onBlur={handleShowSign} />
-      {showSign && props.valueLen && props.valueLen > 21 && <div className='absolute right-0'>...</div>}
+      { props.valueLen && props.valueLen > 25 && !showSign && <div className='absolute right-0'>...</div>}
     </div>
   )
 })
