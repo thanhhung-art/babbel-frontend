@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { googleLogout } from "@react-oauth/google";
 import Input from "./Input";
 import { RESET_STATES } from "../../context/actions";
+import LoadingIndicator from "./LoadingIndicator";
 interface IDataUpload {
   name: string;
   email: string;
@@ -29,6 +30,7 @@ const pass_secret = import.meta.env.VITE_PASS_SECRET;
 const Profile = () => {
   const { state, dispatch } = useContext(Context);
   const [linkToImage, setLinkToImage] = useState("");
+  const [uploading, setUploading] = useState(false);
   const [passType, setPassType] = useState<"text" | "password">("password");
   const base64Image = useRef<string | ArrayBuffer | null>("");
   const dataUpload = useRef<IDataUpload>({
@@ -55,7 +57,7 @@ const Profile = () => {
     },
     {
       onSuccess: (data) => {
-        dispatch({ type: RESET_STATES })
+        dispatch({ type: RESET_STATES });
       },
     }
   );
@@ -83,14 +85,17 @@ const Profile = () => {
       dataUpload.current.email = emailRef.current.value;
       dataUpload.current.name = nameRef.current.value;
       dataUpload.current.password = encryptPass;
-    }
 
-    if (typeof dataUpload.current.image == "string") {
+      setUploading(true);
       socket.emit(
         "edit_user_info",
         dataUpload.current,
-        (response: { success: boolean; image_url?: string }) => {
+        (response: {
+          success: boolean;
+          image_url?: { secure_url: string };
+        }) => {
           if (response.success) {
+            setUploading(false);
           }
         }
       );
@@ -149,11 +154,21 @@ const Profile = () => {
       </div>
       <div className="flex gap-1">
         <h3 className="w-14">email :</h3>
-        <Input ref={emailRef} valueLen={emailRef.current?.value.length} type='text' className="outline-none w-fit" />
+        <Input
+          ref={emailRef}
+          valueLen={emailRef.current?.value.length}
+          type="text"
+          className="outline-none w-fit"
+        />
       </div>
       <div className="flex gap-1">
         <h3 className="w-14">name :</h3>
-        <Input ref={nameRef} type="text" className="outline-none w-fit" valueLen={nameRef.current?.value.length} />
+        <Input
+          ref={nameRef}
+          type="text"
+          className="outline-none w-fit"
+          valueLen={nameRef.current?.value.length}
+        />
       </div>
       {currUser && currUser.password && (
         <div className="flex gap-2 relative">
@@ -174,9 +189,13 @@ const Profile = () => {
       <div className="mt-2">
         <button
           onClick={handleUpload}
-          className="w-full bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white rounded-full py-1 px-3 shadow-sm shadow-blue-300"
+          className="w-full bg-blue-500 hover:bg-blue-600 active:bg-blue-700 flex justify-center text-white rounded-full py-1 px-3 shadow-sm shadow-blue-300"
         >
-          update info
+          {uploading ? (
+            <LoadingIndicator />
+          ) : (
+            "update info"
+          )}
         </button>
       </div>
       <div className="mt-2">
