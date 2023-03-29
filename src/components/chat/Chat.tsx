@@ -167,8 +167,8 @@ const Chat = () => {
           (res: string) => {
             console.log(res);
           }
-          );
-        }
+        );
+      }
       base64Image.current = "";
       messageRef.current.value = "";
       setLinkToImage("");
@@ -218,17 +218,20 @@ const Chat = () => {
     if (messageRef.current) messageRef.current.value += emojiData.emoji;
   };
 
-  const loadFile = useCallback(function (event: ChangeEvent<HTMLInputElement>) {
-    if (event.target.files && event.target.files.length > 0) {
-      const reader = new FileReader();
-      reader.onloadend = (e) => {
-        base64Image.current = reader.result;
-      };
-      reader.readAsDataURL(event.target.files[0]);
+  const loadFile = useCallback(
+    function (event: ChangeEvent<HTMLInputElement>) {
+      if (event.target.files && event.target.files.length > 0) {
+        const reader = new FileReader();
+        reader.onloadend = (e) => {
+          base64Image.current = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
 
-      setLinkToImage(URL.createObjectURL(event.target.files[0]));
-    }
-  }, [setLinkToImage]);
+        setLinkToImage(URL.createObjectURL(event.target.files[0]));
+      }
+    },
+    [setLinkToImage]
+  );
 
   const handleRemoveImage = () => setLinkToImage("");
 
@@ -280,9 +283,9 @@ const Chat = () => {
     );
 
     return () => {
-      socket.off("private_message")
-      socket.off("room_message")
-    }
+      socket.off("private_message");
+      socket.off("room_message");
+    };
   }, []);
 
   useEffect(() => {
@@ -309,9 +312,9 @@ const Chat = () => {
     });
 
     return () => {
-      socket.off("a_user_typing_a_message")
-      socket.off("a_user_stop_typing")
-    }
+      socket.off("a_user_typing_a_message");
+      socket.off("a_user_stop_typing");
+    };
   }, [currConversationId]);
 
   useEffect(() => {
@@ -357,7 +360,7 @@ const Chat = () => {
       socket.on("dont_like_message", (conversationId, userId, messageId) => {
         if (currConversationId === conversationId) {
           const messageIndex = conversation.findIndex(
-            (message) => message._id === messageId
+            (message) => message._id === messageId || message.time === messageId
           );
           messageIndex > -1 &&
             conversation[messageIndex].likes.splice(
@@ -365,7 +368,7 @@ const Chat = () => {
               1
             );
         }
-        setConversation([...conversation]);
+        setConversation((conversation) => [...conversation]);
       });
     }
 

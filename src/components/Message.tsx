@@ -31,7 +31,7 @@ const Message = ({
   const [openDeleteBtn, setOpenDeleteBtn] = useState(false);
   const [liked, setLiked] = useState(false);
   const [messageDecrypt, setMessageDecrypt] = useState("");
-  const isCurrUser = useMemo(() => state.currUserId === content.userId, [])
+  const isCurrUser = state.currUserId === content.userId;
   const isNotification: boolean = useMemo(
     () =>
       content.message.endsWith("has joined the room") ||
@@ -53,7 +53,7 @@ const Message = ({
     [openDeleteBtn]
   );
   
-  const handleDeleteMessage = useCallback(() => {
+  const handleDeleteMessage = () => {
     if (state.otherId) {
       socket.emit("delete_personal_message", {
         id: content._id || "",
@@ -83,9 +83,9 @@ const Message = ({
         roomId: state.currRoomId,
       });
     }
-  }, []);
+  }
 
-  const handleLikeMessage = useCallback(() => {
+  const handleLikeMessage = () => {
     if (!liked)
       socket.emit(
         "like_message",
@@ -102,8 +102,9 @@ const Message = ({
         content._id,
         state.otherId
       );
+      
     setLiked(!liked);
-  }, [liked]);
+  }
 
   const handleMessage = useCallback((): string => {
     if (isNotification) {
@@ -186,7 +187,7 @@ const Message = ({
             </div>
             {(isCurrUser || isRoomMaster) && (
               <div className={`absolute ${ isCurrUser ? "bottom-0 -left-6" : "top-0 left-full" } rounded-full`}>
-                {content.likes.length > 0 && !isRoomMaster && (
+                {content.likes.length > 0 && (content.userId === state.currUserId) && (
                   <div className="flex">
                     <span className="text-ssm font-normal">
                       {content.likes.length}

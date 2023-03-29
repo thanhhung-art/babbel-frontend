@@ -21,7 +21,6 @@ const Home = () => {
     });
 
     return () => {
-      socket.off("user_connected")
       socket.off("users_online")
       socket.connected && socket.disconnect()
     }
